@@ -9,7 +9,7 @@
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
                     <a href="#">
-                        <div class="text-tiny">Dashboard</div>
+                        <div class="text-tiny">Dashboard 2</div>
                     </a>
                 </li>
                 <li>
