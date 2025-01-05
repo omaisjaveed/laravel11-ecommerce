@@ -104,6 +104,15 @@ class AdminController extends Controller
         })->save($destinationPath.'/'.$imageName);
     }
 
+    public function GenerateCategoryThumbailsImage($image, $imageName){
+        $destinationPath = public_path('uploads/categories');
+        $img = Image::read($image->path());
+        $img->cover(124,124,"top");
+        $img->resize(124,124, function($constraint){
+            $constraint->aspectRatio();
+        })->save($destinationPath.'/'.$imageName);
+    }
+
    
 
     public function categories(){
@@ -111,5 +120,79 @@ class AdminController extends Controller
         return view('admin.categories', compact('categories'));
     }
 
+    public function category_add(){
+        return view('admin.category-add');
+    }
 
+
+    public function category_store(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:brands,slug',
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $image = $request->file('image');
+        $file_extension = $request->file('image')->extension();
+        $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+        $this->GenerateCategoryThumbailsImage($image, $file_name);
+        $category->image = $file_name;
+        $category->save();
+        return redirect()->route('admin.categories')->with('status','Category has been added');
+    }
+
+
+    public function category_edit($id){
+        $category = Category::find($id);
+        return view('admin.category-edit', compact('category'));
+    }
+
+
+    public function category_update(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:brands,slug,'.$request->id,
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        $category = Category::find($request->id);
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $image = $request->file('image');   
+        if($request->hasFile('image')){
+            if(File::exists(public_path('uploads/categories').'/'.$category->image)){
+                File::delete(public_path('uploads/categories'.'/'.$category->image));
+            }
+            $image = $request->file('image');
+            $file_extension = $request->file('image')->extension();
+            $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+            $this->GeneratecategoryThumbailsImage($image, $file_name);
+            $category->image = $file_name;
+        }
+        $category->save();
+        return redirect()->route('admin.categories')->with('status','category has been updated');
+    }
+
+
+    public function category_delete($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return redirect()->route('admin.categories')->with('error', 'category not found');
+        }
+
+        // Delete image if exists
+        if (File::exists(public_path('uploads/categories').'/'.$category->image)) {
+            File::delete(public_path('uploads/categories'.'/'.$category->image));
+        }
+
+        // Delete the category
+        $category->delete();
+
+        return redirect()->route('admin.categories')->with('status', 'category has been deleted');
+    }
 }
