@@ -104,9 +104,7 @@ class AdminController extends Controller
         })->save($destinationPath.'/'.$imageName);
     }
 
-    // public function categories(){
-    //     return view('admin.category');
-    // }
+   
 
     public function categories(){
         $categories = Category::orderBY('id','DESC')->paginate(10);
