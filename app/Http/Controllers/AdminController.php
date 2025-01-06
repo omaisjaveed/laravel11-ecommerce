@@ -289,4 +289,11 @@ class AdminController extends Controller
         })->save($destinationPathThumbnail.'/'.$imageName);
     }
 
+
+    public function product_edit($id){
+        $brand = Brand::find($id);
+        $categories = category::select('id',"name")->orderBy('name')->get();
+        $brands = brand::select('id',"name")->orderBy('name')->get();
+        return view('admin.brand-edit', compact('brand','categories','brands'));
+    }
 }
