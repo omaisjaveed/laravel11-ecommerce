@@ -8,7 +8,7 @@
             <h3>All Products</h3>
             <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                 <li>
-                    <a href="index.html">
+                    <a href="{{route('admin.index')}}">
                         <div class="text-tiny">Dashboard</div>
                     </a>
                 </li>
@@ -34,7 +34,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="add-product.html"><i
+                <a class="tf-button style-1 w208" href=" {{ route('admin.products.add') }} "><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="table-responsive">
@@ -55,25 +55,26 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($products as $product)
                         <tr>
-                            <td>6</td>
+                            <td>{{ $product->id }}</td>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="1718623519.html" alt="" class="image">
+                                    <img src="{{ asset('uploads/products/thumbnails') }}/{{$product->image}}" alt="{{$product->name}}" class="image">
                                 </div>
                                 <div class="name">
-                                    <a href="#" class="body-title-2">Product6</a>
-                                    <div class="text-tiny mt-3">product6</div>
+                                    <a href="#" class="body-title-2">{{ $product->name }}</a>
+                                    <div class="text-tiny mt-3">{{ $product->slug }}</div>
                                 </div>
                             </td>
-                            <td>$128.00</td>
-                            <td>$110.00</td>
-                            <td>SKU7868</td>
-                            <td>Category3</td>
-                            <td>Brand2</td>
-                            <td>Yes</td>
-                            <td>instock</td>
-                            <td>11</td>
+                            <td>{{ $product->regular_price }}</td>
+                            <td>{{ $product->sale_price }}</td>
+                            <td>{{ $product->SKU }}</td>
+                            <td>{{ $product->category->name }}</td>
+                            <td>{{ $product->brand->name }}</td>
+                            <td>{{ $product->featured == 0 ? "No" : "Yes" }}</td>
+                            <td>{{ $product->stock_status }}</td>
+                            <td>{{ $product->quantity }}</td>
                             <td>
                                 <div class="list-icon-function">
                                     <a href="#" target="_blank">
@@ -94,13 +95,14 @@
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
 
             <div class="divider"></div>
             <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-
+                {{$products->links('pagination::bootstrap-5')}}
 
             </div>
         </div>

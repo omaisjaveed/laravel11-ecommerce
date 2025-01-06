@@ -203,4 +203,11 @@ class AdminController extends Controller
         $products = Product::orderBy('created_at',"DESC")->paginate(10);
         return view('admin.products', compact('products'));
     }
+
+    public function product_add(){
+        $categories = category::select('id',"name")->orderBy('name')->get();
+        $brands = brand::select('id',"name")->orderBy('name')->get();
+        return view('admin.product-add', compact('categories','brands'));
+    }
+
 }
