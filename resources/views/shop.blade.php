@@ -322,9 +322,9 @@
 
         <div class="d-flex justify-content-between mb-4 pb-md-2">
           <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-            <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
+            <a href=" {{route('home.index')}} " class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
             <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-            <a href="#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
+            <a href="{{route('shop.index')}}" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
           </div>
 
           <div class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
@@ -371,13 +371,16 @@
                 <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                      <a href="details.html"><img loading="lazy" src="assets/images/products/product_1.jpg" width="330"
+                      <a href="details.html"><img loading="lazy" src="{{ asset('/uploads/products') }}/{{$product->image}} " width="330"
                           height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
                     </div>
                     <div class="swiper-slide">
-                      <a href="details.html"><img loading="lazy" src="assets/images/products/product_1-1.jpg"
-                          width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
+                        @foreach(explode(",", $product->images) as $gimg)
+                      <a href="details.html"><img loading="lazy" src=" {{ asset('/uploads/products') }}/{{$gimg}} "
+                          width="330" height="400" alt="{{$product->name}}" class="pc__img"></a>
+                          @endforeach
                     </div>
+
                   </div>
                   <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11"
                       xmlns="http://www.w3.org/2000/svg">
@@ -394,10 +397,16 @@
               </div>
 
               <div class="pc__info position-relative">
-                <p class="pc__category">Dresses</p>
+                <p class="pc__category">{{ $product->category->name }}</p>
                 <h6 class="pc__title"><a href="details.html">{{ $product->name }}</a></h6>
                 <div class="product-card__price d-flex">
-                  <span class="money price">$29</span>
+                    <span class="money price">
+                            @if($product->sale_price)
+                            <s>$ {{ $product->regular_price }} </s> ${{$product->sale_price}}
+                            @else
+                            $ {{ $product->regular_price }}
+                            @endif
+                    </span>
                 </div>
                 <div class="product-card__review d-flex align-items-center">
                   <div class="reviews-group d-flex">
@@ -454,6 +463,13 @@
             </svg>
           </a>
         </nav>
+
+
+        <div class="divider"></div>
+        <div class="d-flex items-center justify-between flex-wrap gap10 wgp-pagination">]
+            {{ $products->links('pagination::bootstrap-5 ') }}
+        </div>
+
       </div>
     </section>
   </main>
