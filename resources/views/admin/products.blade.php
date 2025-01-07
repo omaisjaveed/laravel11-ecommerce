@@ -90,10 +90,12 @@
                                             <i class="icon-edit-3"></i>
                                         </div>
                                     </a>
-                                    <form action="#" method="POST">
-                                        <div class="item text-danger delete">
+                                    <form id="delete-form-{{ $product->id }}" action="{{ route('admin.product.delete', ['id' => $product->id]) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $product->id }})" class="btn btn-danger">
                                             <i class="icon-trash-2"></i>
-                                        </div>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -112,3 +114,32 @@
     </div>
 </div>
 @endsection
+
+
+
+
+@push('scripts')
+
+<script>
+    function confirmDelete(productId) {
+
+        swal({
+            title : "Are you sure you want to delete?",
+            text : "Once deleted, you will not be able to recover this data",
+            type : "warning",
+            buttons: ['No','Yes'],
+            confirmButtonColor:'#dc3545',
+
+        }).then(function(result){
+            if(result){
+                document.getElementById('delete-form-' + productId).submit();
+            }
+        })
+        // if (confirm("Are you sure you want to delete this category?")) {
+        //     document.getElementById('delete-form-' + productId).submit();
+        // }
+    }
+</script>
+
+ 
+@endpush
