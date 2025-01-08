@@ -30,4 +30,9 @@ class CartController extends Controller
         Cart::instance('cart')->update($rowId,$qty);
         return redirect()->back();
     }
+
+    public function remove_item($rowId){
+        Cart::instance('cart')->remove($rowId);
+        return redirect()->back();
+    }
 }

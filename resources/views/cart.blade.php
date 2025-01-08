@@ -88,12 +88,19 @@
                   <span class="shopping-cart__subtotal">$ {{ $item->subtotal() }}</span>
                 </td>
                 <td>
-                  <a href="#" class="remove-cart">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                      <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                    </svg>
-                  </a>
+
+                  <form method="POST" action="{{ route('cart.item.remove', ['rowId' => $item->rowId ]) }} ">
+                    @csrf
+                    @method('DELETE')
+                    <button href="javascript:void(0)" class="remove-cart">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+                        <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+                      </svg>
+                    </button>
+                  </form>
+
+
                 </td>
               </tr>
                @endforeach
@@ -173,6 +180,10 @@
     });
 
     $(".qty-control__reduce").on("click", function(){
+      $(this).closest('form').submit();
+    });
+
+    $(".remove-cart").on("click", function(){
       $(this).closest('form').submit();
     });
 
