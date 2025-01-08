@@ -70,8 +70,18 @@
                 <td>
                   <div class="qty-control position-relative">
                     <input type="number" name="quantity" value="{{$item->qty}}" min="1" class="qty-control__number text-center">
-                    <div class="qty-control__reduce">-</div>
-                    <div class="qty-control__increase">+</div>
+                    
+                    <form method="post" action="{{route('cart.qty.decrease', ['rowId' => $item->rowId])}}">
+                      @csrf
+                      @method('PUT')
+                      <button style="border: none" type="submit" class="qty-control__reduce">-</button>
+                    </form>
+
+                    <form method="post" action="{{route('cart.qty.increase', ['rowId' => $item->rowId])}}">
+                      @csrf
+                      @method('PUT')
+                      <button style="border: none" type="submit" class="qty-control__increase">+</button>
+                    </form>
                   </div>
                 </td>
                 <td>
@@ -151,3 +161,22 @@
     </section>
   </main>
 @endsection
+
+
+@push('script')
+
+<script>
+  $(function(){
+
+    $(".qty-control__increase").on("click", function(){
+      $(this).closest('form').submit();
+    });
+
+    $(".qty-control__reduce").on("click", function(){
+      $(this).closest('form').submit();
+    });
+
+  });
+</script>
+
+@endpush
