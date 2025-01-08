@@ -113,7 +113,13 @@
               <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
                 value="APPLY COUPON">
             </form>
-            <button class="btn btn-light">UPDATE CART</button>
+
+            <form action="{{ route('cart.empty') }}" method="post">
+              @csrf
+              @method('DELETE')
+                <button type="submit" class="btn btn-light">CLEAR CART</button>
+            </form>
+
           </div>
         </div>
 
