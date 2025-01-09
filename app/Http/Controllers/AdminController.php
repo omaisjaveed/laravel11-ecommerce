@@ -421,4 +421,28 @@ class AdminController extends Controller
         return view('admin.coupons',compact('coupons'));
     }
 
+    public function coupon_add(){
+        return view('admin.coupon-add');
+    }
+    
+    public function coupon_store(Request $request){
+        $request->validate([
+            'code' => 'required',
+            'type' => 'required',
+            'value' => 'required',
+            'cart_value' => 'required',
+            'expiry_date' => 'required',
+        ]);
+
+        $coupon = new coupon();
+        $coupon->code = $request->code;
+        $coupon->type = $request->type;
+        $coupon->value = $request->value;
+        $coupon->cart_value = $request->cart_value;
+        $coupon->expiry_date = $request->expiry_date;
+
+        $coupon->save();
+        return redirect()->route('admin.coupons')->with('status', 'Coupons has been Added');
+    }
+
 }
