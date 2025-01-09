@@ -488,10 +488,11 @@
 
             @endguest
   
-            <a href="wishlist.html" class="header-tools__item">
+            <a href="wishlist.html" class="header-tools__item header-tools__cart">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <use href="#icon_heart" />
               </svg>
+              
             </a>
   
             <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
@@ -662,6 +663,8 @@
               </svg>
               <span class="wishlist-amount d-block position-absolute js-wishlist-count">3</span>
             </div>
+
+            
             <span>Wishlist</span>
           </a>
         </div>
