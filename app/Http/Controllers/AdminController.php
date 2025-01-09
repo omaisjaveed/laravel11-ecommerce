@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Coupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\support\Str;
@@ -412,6 +413,12 @@ class AdminController extends Controller
             }
         }
         return redirect()->route('admin.products')->with('status', 'Product deleted successfully');
+    }
+
+
+    public function coupons(){
+        $coupons = Coupon::orderBy('expiry_date','DESC')->paginate(12);
+        return view('admin.coupons',compact('coupons'));
     }
 
 }
