@@ -39,6 +39,9 @@
             </div>
             <div class="wg-table table-all-user">
                 <div class="table-responsive">
+                    @if(Session::has('status'))
+                        <p class="alert alert-sucess">{{ session::get('status') }}</p>
+                    @endif
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -62,15 +65,17 @@
                                 <td>{{$coupon->expiry_date}}</td>
                                 <td>
                                     <div class="list-icon-function">
-                                        <a href="#">
+                                        <a href="{{route('admin.coupon.edit',['id' => $coupon->id])}}">
                                             <div class="item edit">
                                                 <i class="icon-edit-3"></i>
                                             </div>
                                         </a>
-                                        <form action="#" method="POST">
-                                            <div class="item text-danger delete">
+                                        <form id="delete-form-{{ $coupon->id }}" action="{{ route('admin.coupon.delete', ['id' => $coupon->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" onclick="confirmDelete({{ $coupon->id }})" class="btn btn-danger">
                                                 <i class="icon-trash-2"></i>
-                                            </div>
+                                            </button>
                                         </form>
                                     </div>
                                 </td>
@@ -89,3 +94,28 @@
 </div>
 
 @endsection
+
+
+
+@push('scripts')
+
+<script>
+    function confirmDelete(couponId) {
+
+        swal({
+            title : "Are you sure you want to delete?",
+            text : "Once deleted, you will not be able to recover this data",
+            type : "warning",
+            buttons: ['No','Yes'],
+            confirmButtonColor:'#dc3545',
+
+        }).then(function(result){
+            if(result){
+                document.getElementById('delete-form-' + couponId).submit();
+            }
+        })
+    }
+</script>
+
+ 
+@endpush
