@@ -60,7 +60,8 @@ class CartController extends Controller
                     'value' => $coupon->value,
                     'cart_value' => $coupon->cart_value,
                 ]);
-                return redirect()->back()->with('success','Coupon Code Applied');
+                $this->calculate_discount();
+                return redirect()->back()->with('success','Coupon has been Applied');
             }
         }
         else{
@@ -78,7 +79,22 @@ class CartController extends Controller
             else{
                 $discount = Cart::instance('cart')->subtotal() * (Session::get('coupon')['value']/100);
             }
-            $subtotalAfterDiscount = Cart::instance('cart')::
+            $subtotalAfterDiscount = Cart::instance('cart')->subtotal() - $discount;
+            $taxAfterDiscount = ($subtotalAfterDiscount * config('cart.tax')) / 100;
+            $totaltaxAfterDiscount = $subtotalAfterDiscount + $taxAfterDiscount;
+
+            Session::put('discounts',[
+                'discount' => number_format(floatval($discount),2,'.',''),
+                'subtotal' => number_format(floatval($subtotalAfterDiscount),2,'.',''),
+                'tax' => number_format(floatval($taxAfterDiscount),2,'.',''),
+                'total' => number_format(floatval($totaltaxAfterDiscount),2,'.',''),
+            ]);
         }
+    }
+
+    public function remove_coupon_code(){
+        Session::forget('coupon');
+        Session::forget('discounts');
+        return redirect()->back()->with('success','Coupon Has been Removed');
     }
 }
