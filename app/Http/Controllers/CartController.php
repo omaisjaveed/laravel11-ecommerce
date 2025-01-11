@@ -97,4 +97,12 @@ class CartController extends Controller
         Session::forget('discounts');
         return redirect()->back()->with('success','Coupon Has been Removed');
     }
+
+    public function checkout(){
+        if(!Auth::check()){
+            return redirect('login');
+        }
+        $address = Address::where('user_id', Auth::user()->id)->where('is_default', 1)->first();
+        return view('checkout',compact('address'));  
+    }
 }
