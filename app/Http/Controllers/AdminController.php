@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Coupon;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\support\Str;
@@ -475,6 +476,12 @@ class AdminController extends Controller
         $coupon = Coupon::find($id);
         $coupon->delete();
         return redirect()->route('admin.coupons')->with('status', 'coupon deleted successfully');
+    }
+
+    public function orders()
+    {
+        $orders = Order::orderBy('created_at','DESC')->patinate(10); // Fetch all orders.
+        return view('admin.orders', compact('orders')); // Pass data to the view.
     }
 
 }

@@ -42,7 +42,7 @@
               </div>
             </div>
 
-            @if($address)
+            {{-- @if($address)
 
                 <div class="row">
                     <div class="col-md-12">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
   
-            @else
+            @else --}}
                 <div class="row mt-5">
                 <div class="col-md-6">
                     <div class="form-floating my-3">
@@ -129,7 +129,7 @@
                 </div>
                 </div>
 
-            @endif
+            {{-- @endif --}}
 
           </div>
           <div class="checkout__totals-wrapper">

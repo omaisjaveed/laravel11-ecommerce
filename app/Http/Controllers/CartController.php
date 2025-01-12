@@ -155,52 +155,52 @@ class CartController extends Controller
         $order->discount = Session::get('checkout')['discount'];
         $order->tax = Session::get('checkout')['tax'];
         $order->total = Session::get('checkout')['total'];
-        $order->name = $request->name;
-        $order->phone = $request->phone;
-        $order->locality = $request->locality;
-        $order->address = $request->address;
-        $order->city = $request->city;
-        $order->state = $request->state;
-        $order->country = $request->country;
-        $order->landmark = $request->landmark;
-        $order->zip = $request->zip;
-        $order->type = $request->type;
-        $order->status = $request->status;
-        $order->is_shipping_different = $request->is_shipping_different;
-        $order->delivered_date = $request->delivered_date;
-        $order->canceled_date = $request->canceled_date;
+        $order->name = $address->name;
+        $order->phone = $address->phone;
+        $order->locality = $address->locality;
+        $order->address = $address->address;
+        $order->city = $address->city;
+        $order->state = $address->state;
+        $order->country = $address->country;
+        $order->landmark = $address->landmark;
+        $order->zip = $address->zip;
+        // $order->type = $request->type;
+        // $order->status = $request->status;
+        // $order->is_shipping_different = $request->is_shipping_different;
+        // $order->delivered_date = $request->delivered_date;
+        // $order->canceled_date = $request->canceled_date;
         $order->save();
 
-        // foreach(Cart::instance('cart')->content() as $item){
-        //     $orderItem = new OrderItem;
-        //     $orderItem->product_id = $item->id;
-        //     $orderItem->order_id = $order->id;
-        //     $orderItem->price = $item->price;
-        //     $orderItem->quantity = $item->qty;
-        //     $orderItem->save();
-        // }
+        foreach(Cart::instance('cart')->content() as $item){
+            $orderItem = new OrderItem;
+            $orderItem->product_id = $item->id;
+            $orderItem->order_id = $order->id;
+            $orderItem->price = $item->price;
+            $orderItem->quantity = $item->qty;
+            $orderItem->save();
+        }
 
-        // if($request->mod == 'card'){
-        // }
-        // else if($request->mod == 'paypal'){
+        if($request->mod == 'card'){
+        }
+        else if($request->mod == 'paypal'){
 
-        // }
-        // if($request->mod == 'cod'){
+        }
+        if($request->mod == 'cod'){
 
-        //     $transaction = new Transaction();
-        //     $transaction->user_id = $user_id;
-        //     $transaction->order_id = $order_id;
-        //     $transaction->mode = $request->mode;
-        //     $transaction->status = "pending";
-        //     $transaction->save();
-        // }
+            $transaction = new Transaction();
+            $transaction->user_id = $user_id;
+            $transaction->order_id = $order_id;
+            $transaction->mode = $request->mode;
+            $transaction->status = "pending";
+            $transaction->save();
+        }
 
-        // Cart::instance('cart')->destroy();
-        // Session::forget('checkout');
-        // Session::forget('discounts');
-        // Session::forget('coupon');
-        // Session::put('order_id',$order_id);
-        // return redirect()->route('order.confirmation');
+        Cart::instance('cart')->destroy();
+        Session::forget('checkout');
+        Session::forget('discounts');
+        Session::forget('coupon');
+        Session::put('order_id',$order->id);
+        return redirect()->route('cart.order.confirmation');
     }
 
 
