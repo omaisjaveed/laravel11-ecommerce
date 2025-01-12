@@ -37,8 +37,11 @@ Route::post('wishlist/add',[WishlistController::class, 'add_to_wishlist'])->name
 Route::put('/cart/increase-quantity/{rowId}', [CartController::class , 'increase_cart_quantity'])->name('cart.qty.increase');
 Route::put('/cart/decrease-quantity/{rowId}', [CartController::class , 'decrease_cart_quantity'])->name('cart.qty.decrease');
 
+
 Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders',[UserController::class , 'orders'])->name('user.orders');
+    Route::get('/account-details/{id}',[UserController::class , 'orders_details'])->name('user.order.details');
 });
 
 
