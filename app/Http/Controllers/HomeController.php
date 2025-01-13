@@ -13,6 +13,7 @@ class HomeController extends Controller
     public function index()
     {
         $slides = Slide::where('status' , 1)->get()->take(3);
-        return view('index','slides');
+        // $slides = Slide::where('status', 1)->limit(3)->get();
+        return view('index',compact('slides'));
     }
 }
