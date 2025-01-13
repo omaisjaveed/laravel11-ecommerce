@@ -554,4 +554,50 @@ class AdminController extends Controller
         })->save($destinationPath.'/'.$imageName);
     }
 
+    public function slide_edit($id){
+        $slide = Slide::find($id);
+        return view('admin.slide-edit', compact('slide'));
+    }
+
+
+    public function slide_update(Request $request){
+        $request->validate([
+            'tagline' => 'required',
+            'title' => 'required',
+            'subtitle' => 'required',
+            'link' => 'required',
+            'status' => 'required',
+            'image' => 'required|mimes:png,jpg,jpeg|max:2048',
+        ]);
+        $slide = Slide::find($request->id);
+        $slide->tagline = $request->tagline;
+        $slide->title = $request->title;
+        $slide->subtitle = $request->subtitle;
+        $slide->link = $request->link;
+        $slide->status = $request->status;
+
+        
+        if($request->hasFile('image')){
+            if(File::exists(public_path('uploads/slides').'/'.$slide->image)){
+                File::delete(public_path('uploads/slides').'/'.$slide->image);
+            }
+            $image = $request->file('image');
+            $file_extension = $request->file('image')->extension();
+            $file_name = Carbon::now()->timestamp.'.'.$file_extension;
+            $this->GenerateslideThumbailsImage($image, $file_name);
+            $slide->image = $file_name;
+
+        }
+        $slide->save();
+
+        return redirect()->route('admin.slides')->with('status','Slide had been Successfully updated');
+    }
+
+
+    public function slide_delete($id){
+        $slide = Slide::find($id);
+        $slide->delete();
+        return redirect()->route('admin.slides')->with('status', 'Slide has been deleted successfully');
+    }
+
 }

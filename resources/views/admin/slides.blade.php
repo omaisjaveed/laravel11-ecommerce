@@ -23,6 +23,9 @@
         </div>
 
         <div class="wg-box">
+            @if(Session::has('status'))
+                    <p class="alert alert-success">{{ Session::get('status') }}</p>
+            @endif
             <div class="flex items-center justify-between gap10 flex-wrap">
                 <div class="wg-filter flex-grow">
                     <form class="form-search">
@@ -67,17 +70,17 @@
                             <td style="width:500px">{{$slide->link}}</td>
                             <td>
                                 <div class="list-icon-function">
-                                    <a href="">
+                                    <a href="{{route('admin.slide.edit', ['id' => $slide->id] )}}">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>
                                     </a>
-                                    <form action=""
-                                        method="POST">
-                                        
-                                        <div class="item text-danger delete">
+                                    <form id="delete-form-{{ $slide->id }}" action="{{ route('admin.slide.delete', ['id' => $slide->id]) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $slide->id }})" class="btn btn-danger">
                                             <i class="icon-trash-2"></i>
-                                        </div>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -96,3 +99,32 @@
 
 
 @endsection
+
+
+
+
+@push('scripts')
+
+<script>
+    function confirmDelete(productId) {
+
+        swal({
+            title : "Are you sure you want to delete Slide?",
+            text : "Once deleted, you will not be able to recover this data",
+            type : "warning",
+            buttons: ['No','Yes'],
+            confirmButtonColor:'#dc3545',
+
+        }).then(function(result){
+            if(result){
+                document.getElementById('delete-form-' + productId).submit();
+            }
+        })
+        // if (confirm("Are you sure you want to delete this category?")) {
+        //     document.getElementById('delete-form-' + productId).submit();
+        // }
+    }
+</script>
+
+ 
+@endpush
