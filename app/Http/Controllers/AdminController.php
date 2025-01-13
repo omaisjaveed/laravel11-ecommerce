@@ -23,17 +23,25 @@ class AdminController extends Controller
         $order = Order::orderBy('created_at','DESC')->get()->take(10);
         $count = Order::count();
         $dashboardDatas = DB::select("
-        SELECT 
-            SUM(total) AS TotalAmount,
-            SUM(IF(status = 'ordered', total, 0)) AS TotalOrderedAmount,
-            SUM(IF(status = 'delivered', total, 0)) AS TotalDeliveredAmount,
-            SUM(IF(status = 'canceled', total, 0)) AS TotalCanceledAmount,
-            COUNT(*) AS Total,
-            SUM(IF(status = 'ordered', 1, 0)) AS TotalOrdered,
-            SUM(IF(status = 'delivered', 1, 0)) AS TotalDelivered,
-            SUM(IF(status = 'canceled', 1, 0)) AS TotalCanceled
-        FROM orders
-    ");
+            SELECT 
+                SUM(total) AS TotalAmount,
+                SUM(IF(status = 'ordered', total, 0)) AS TotalOrderedAmount,
+                SUM(IF(status = 'delivered', total, 0)) AS TotalDeliveredAmount,
+                SUM(IF(status = 'canceled', total, 0)) AS TotalCanceledAmount,
+                COUNT(*) AS Total,
+                SUM(IF(status = 'ordered', 1, 0)) AS TotalOrdered,
+                SUM(IF(status = 'delivered', 1, 0)) AS TotalDelivered,
+                SUM(IF(status = 'canceled', 1, 0)) AS TotalCanceled
+            FROM orders
+        ");
+        // $monthlyDatas = DB::select("SELECT M.id As MonthNo, M.name As MonthName,
+        //                 IFNULL(D.TotalAmount,0) As TotalAmount,
+        //                 IFNULL(D.TotalOrderAmount,0) As TotalOrderAmount,
+        //                 IFNULL(D.TotalDeliveredAmount,0) As TotalDeliveredAmount,
+        //                 IFNULL(D.TotalCanceledAmount,0) As TotalCanceledAmount FROM month_names M,
+        //                 LEFT JOIN (SELECT )
+        //                 ");
+        
     
         return view('admin.index', compact('order', 'count','dashboardDatas'));
     }
