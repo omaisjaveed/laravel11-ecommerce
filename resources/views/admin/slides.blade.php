@@ -35,7 +35,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="add-slide.html"><i
+                <a class="tf-button style-1 w208" href="{{ route('admin.slide.add') }}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
@@ -47,7 +47,7 @@
                             <th>Tagline</th>
                             <th>Title</th>
                             <th>Subtitle</th>
-                            <th>Link</th>
+                            <th style="width:300px">Link</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -58,13 +58,13 @@
                             <td>{{$slide->id}}</td>
                             <td class="pname">
                                 <div class="image">
-                                    <img src="1718066840.html" alt="" class="image">
+                                    <img src="{{asset('uploads/slides')}}/{{$slide->image}}" alt="{{$slide->title}}" class="image">
                                 </div>
                             </td>
                             <td>{{$slide->tagline}}</td>
                             <td>{{$slide->title}}</td>
                             <td>{{$slide->subtitle}}</td>
-                            <td>{{$slide->link}}</td>
+                            <td style="width:500px">{{$slide->link}}</td>
                             <td>
                                 <div class="list-icon-function">
                                     <a href="">
@@ -88,7 +88,7 @@
             </div>
             <div class="divider"></div>
             <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-
+                {{$slides->links('pagination::bootstrap-5')}}
             </div>
         </div>
     </div>
