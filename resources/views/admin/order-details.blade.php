@@ -20,6 +20,11 @@
         </ul>
     </div>
 
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="wg-box">
         <div class="flex items-center justify-between gap10 flex-wrap">
             <div class="wg-filter flex-grow">
@@ -53,7 +58,7 @@
                         @elseif($order->status == 'canceled')
                             <span class="badge bg-danger">Canceled</span>
                         @else
-                            <span class="badge bg-success">Ordered</span>
+                            <span class="badge bg-warning">Ordered</span>
                         @endif
                     </td>
                 </tr>
@@ -181,6 +186,32 @@
                 
             </tbody>
         </table>
+    </div>
+
+
+    <div class="wg-box mt-5">
+        <h5>Update Order status</h5>
+        <form action="{{route('admin.order.status.update')}}" method="POST">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="order_id" value="{{ $order->id }}"/>
+            <div class="row">
+                <div class="col-3">
+                    <div class="select">
+                        <select id="order_id" name="order_status">
+                            <option value="ordered">ordered</option>
+                            <option value="delivered">delivered</option>
+                            <option value="canceled">canceled</option>
+                        </select>                
+                    </div>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary tf-button w208">Update Order Status</button>
+                </div>
+            </div>
+            
+
+        </form>
     </div>
 </div>
 

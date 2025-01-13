@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
     Route::get('/account-orders',[UserController::class , 'orders'])->name('user.orders');
     Route::get('/account-details/{id}',[UserController::class , 'orders_details'])->name('user.order.details');
+    Route::put('/account-order/cancel-order',[UserController::class , 'cancel_order'])->name('user.order.cancel');
 });
 
 
@@ -80,6 +81,8 @@ Route::middleware(['auth', AuthAdmin::class ])->group(function(){
     Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
     Route::get('/admin/orders/details/{id}',[AdminController::class,'order_details'])->name('admin.order.details');
     
+    Route::put('admin/order/update-status', [AdminController:: class, 'order_status'])->name('admin.order.status.update');
+    Route::get('admin/slides', [AdminController:: class, 'slides'])->name('admin.slides');
 });
 
 

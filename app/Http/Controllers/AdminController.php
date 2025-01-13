@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\Slide;
 use App\Models\OrderItem;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -491,6 +492,27 @@ class AdminController extends Controller
         $orderItems = OrderItem::where('order_id', $order_id)->orderBy('id')->paginate(12);
         $transaction = Transaction::where('order_id', $order_id)->first();
         return view('admin.order-details',compact('order', 'orderItems' , 'transaction'));
+    }
+
+    public function order_status(Request $request){
+        $order = Order::find($request->order_id);
+        $order->status = $request->order_status;
+
+        if($order->status == 'delivered'){
+            $order->delivered_date = Carbon::now();
+        }
+        else if($order->status == 'canceled'){
+            $order->canceled_date = Carbon::now();
+        }
+
+        $order->save();
+        return back()->with('status'," order status has been updated");
+    }
+
+
+    public function slides(){
+        $slides = Slide::orderBy('id','DESC')->paginate(12);
+        return view('admin.slides',compact('slides'));
     }
 
 }
