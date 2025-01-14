@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-details/{id}',[UserController::class , 'orders_details'])->name('user.order.details');
     Route::put('/account-order/cancel-order',[UserController::class , 'cancel_order'])->name('user.order.cancel');
     Route::get('/contact',[HomeController:: class, 'contact'])->name('user.contact');
+    Route::post('/contact/store',[HomeController:: class, 'contact_store'])->name('user.contact.store');
 });
 
 

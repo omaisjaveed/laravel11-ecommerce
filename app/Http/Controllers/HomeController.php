@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Slide;
 
@@ -25,4 +26,22 @@ class HomeController extends Controller
     public function contact(){
         return view('contact');
     }
+
+    public function contact_store(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'comment' => 'required',
+        ]);
+        $contact = new Contact();
+        $contact->name = $request->name;
+        $contact->email = $request->email;
+        $contact->phone = $request->phone;
+        $contact->comment = $request->comment;
+        $contact->save();
+
+
+        return redirect()->route('user.contact')->with('status','Information has been Submitted');
+    } 
 }
