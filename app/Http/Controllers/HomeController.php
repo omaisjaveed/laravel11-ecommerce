@@ -21,4 +21,8 @@ class HomeController extends Controller
         // $slides = Slide::where('status', 1)->limit(3)->get();
         return view('index',compact('slides','categories','products','fproducts'));
     }
+
+    public function contact(){
+        return view('contact');
+    }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminController;
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-orders',[UserController::class , 'orders'])->name('user.orders');
     Route::get('/account-details/{id}',[UserController::class , 'orders_details'])->name('user.order.details');
     Route::put('/account-order/cancel-order',[UserController::class , 'cancel_order'])->name('user.order.cancel');
+    Route::get('/contact',[HomeController:: class, 'contact'])->name('user.contact');
 });
 
 
