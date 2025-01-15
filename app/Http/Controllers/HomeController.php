@@ -44,4 +44,10 @@ class HomeController extends Controller
 
         return redirect()->route('user.contact')->with('status','Information has been Submitted');
     } 
+
+    public function search(Request $request){
+        $query = $request->input('query');
+        $result = Product::where("name","LIKE","%{$query}%");
+        return response()->json($result);
+    }
 }
