@@ -120,9 +120,7 @@
                 document.getElementById('delete-form-' + productId).submit();
             }
         })
-        // if (confirm("Are you sure you want to delete this category?")) {
-        //     document.getElementById('delete-form-' + productId).submit();
-        // }
+        
     }
 </script>
 
